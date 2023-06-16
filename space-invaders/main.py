@@ -1,6 +1,8 @@
 from vendor.pplay.sprite import Sprite
 from vendor.pplay.window import Window
 
+from core.fps import FPS
+
 from scenes.difficulty import Difficulty
 from scenes.game import Game
 
@@ -9,6 +11,7 @@ from layout import center_x_in_window
 
 def main():
     window = Window(1280, 720)
+    fps = FPS(window)
 
     exit_btn = Sprite("assets/menu/exit.png")
     exit_btn.y = window.height - exit_btn.height - 64
@@ -29,12 +32,13 @@ def main():
     for element in [play, difficulty, ranking, exit_btn]:
         center_x_in_window(element, window)
 
-    btn_pairs =[(play, play_hover), (difficulty, difficulty_hover), (ranking, ranking_hover), (exit_btn, exit_hover)]
+    btn_pairs = [(play, play_hover), (difficulty, difficulty_hover), (ranking, ranking_hover), (exit_btn, exit_hover)]
     for pair in btn_pairs:
         pair[1].x = pair[0].x
         pair[1].y = pair[0].y
 
     while True:
+        fps.tick()
         window.set_background_color([0, 0, 0])
 
         mouse = window.get_mouse()
@@ -53,6 +57,7 @@ def main():
         if mouse.is_over_object(exit_btn) and mouse.is_button_pressed(1):
             return
 
+        fps.draw()
         window.update()
 
 
